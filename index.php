@@ -7,9 +7,9 @@ unset($files[0]);
 unset($files[1]);
 unset($files[2]);
 
-$output = [];
-$outputJSON = [];
-$passes = 0;
+//$output = [];
+//$outputJSON = [];
+//$passes = 0;
 $fails = 0;
 $data = [];
 
@@ -51,8 +51,59 @@ foreach ($files as $file) {
 //echo "<br>";echo "<br>";
 //print_r($files);
 
+if ($fails !== 0){
+    header('Content-type: application/json');
+
+    foreach ($files as $file) {
+
+        $extension = explode('.', $file);
+
+        switch (@$extension[1]) {
+            case 'php':
+                $startScript = "php";
+                break;
+            case 'js':
+                $startScript = "node";
+                break;
+            case 'py':
+                $startScript = "python";
+                break;
+            case 'dart':
+                $startScript = "dart";
+                break;
+            case 'java':
+                $startScript = "java";
+
+                exec("javac scripts/" . $file);
+                break;
+
+            default:
+                $startScript = "php";
+                break;
+        }
+
+        $f = @exec($startScript . " scripts/" . $file);
 
 
+        $newString = str_ireplace(getEmailFromFileContent($f),' ', str_ireplace(' and email','', $f));
+
+        $regexReturn  = testFileContent($f);
+
+        $data[] = [
+            'file' => $file,
+            'output' => htmlspecialchars(trim($newString)),
+            'name' => str_replace('-',' ',$extension[0]),
+            'id' => $regexReturn[1],
+            'email' => trim(getEmailFromFileContent($f)),
+            'language' => $regexReturn[2],
+            'status' => $regexReturn[0],
+        ];
+
+    }
+
+    echo json_encode($data);
+
+} else {
 if (ob_get_level() == 0) ob_start();
 ?>
 <html>
@@ -228,7 +279,7 @@ if (ob_get_level() == 0) ob_start();
 
 </html>
 <?php
-
+}
 
 
 function testFileContent($string)
