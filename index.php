@@ -7,10 +7,6 @@ unset($files[0]);
 unset($files[1]);
 unset($files[2]);
 
-//$output = [];
-//$outputJSON = [];
-//$passes = 0;
-$fails = 0;
 $data = [];
 
 foreach ($files as $file) {
@@ -105,8 +101,8 @@ if (isset($json) && strtolower($json) == 'json'){
 } else {
 if (ob_get_level() == 0) ob_start();
 ?>
-<html>
 
+<html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script
@@ -201,18 +197,6 @@ if (ob_get_level() == 0) ob_start();
 
             $newString = str_ireplace(getEmailFromFileContent($f),' ', str_ireplace('and email',' ', $f));
             $regexReturn  = testFileContent($f);
-
-//                $data[] = [
-//                    'file' => $file,
-//                    'output' => $newString,
-//                    'name' => str_replace('-',' ',$extension[0]),
-//                    'id' => $regexReturn[1],
-//                    'email' => trim(getEmailFromFileContent($f)),
-//                    'language' => $regexReturn[2],
-//                    'status' => $regexReturn[0],
-//                ];
-
-
             $testEmailVariable = trim(getEmailFromFileContent($f));
             $status = testFileContent($f)[0];
             $email = 'No Email';
@@ -297,4 +281,3 @@ function getEmailFromFileContent($string)
 
     return @$matches[0][0];
 }
-?>
