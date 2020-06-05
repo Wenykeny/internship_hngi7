@@ -166,7 +166,7 @@ if (isset($json) && strtolower($json) == 'json') {
                     case 'java':
                         $startScript = "java";
 
-                        exec("javac scripts/" . $file);
+                        @exec("javac scripts/" . $file);
                         break;
 
                     default:
