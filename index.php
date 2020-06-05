@@ -13,7 +13,6 @@ unset($files[2]);
 $fails = 0;
 $data = [];
 
-echo "<br>";
 foreach ($files as $file) {
     $extension = explode('.', $file);
     //print_r($extension);
@@ -51,7 +50,7 @@ foreach ($files as $file) {
 //echo "<br>";echo "<br>";
 //print_r($files);
 
-if ($fails !== 0){
+if (isset($json) && strtolower($json) == 'json'){
     header('Content-type: application/json');
 
     foreach ($files as $file) {
